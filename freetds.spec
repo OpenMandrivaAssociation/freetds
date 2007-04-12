@@ -1,0 +1,195 @@
+%define TDSVER	7.0
+
+%define	major	0
+%define libname	%mklibname %{name} %{major}
+
+Summary: 	An OpenSource implementation of the tubular data stream protocol
+Name: 		freetds
+Version: 	0.64
+Release: 	%mkrel 4
+License: 	LGPL
+Group: 		System/Libraries
+URL: 		http://www.freetds.org/
+Source: 	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.bz2
+BuildRequires:	doxygen
+BuildRequires:	ncurses-devel
+BuildRequires:	readline-devel
+BuildRequires:	unixODBC-devel >= 2.0.0
+BuildRequires:	autoconf2.5
+BuildRequires:	automake1.7
+BuildRequires:	libtool
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+%description
+FreeTDS is a free (open source) implementation of Sybase's db-lib,
+ct-lib, and ODBC libraries. Currently, dblib and ctlib are most
+mature. Both of these libraries have several programs know to
+compile and run against them. ODBC is just a roughed in skeleton,
+and not useful for real work.
+
+This package is built with support for TDS version %{TDSVER}.
+
+%package -n	%{libname}
+Summary:	An Open Source implementation of the tubular data stream protocol
+Group:          System/Libraries
+Obsoletes:	%{name}
+Provides:	%{name}
+
+%description -n	%{libname}
+FreeTDS is a free (open source) implementation of Sybase's db-lib,
+ct-lib, and ODBC libraries. Currently, dblib and ctlib are most
+mature. Both of these libraries have several programs know to
+compile and run against them. ODBC is just a roughed in skeleton,
+and not useful for real work.
+
+This package is built with support for TDS version %{TDSVER}.
+
+%package -n	%{libname}-unixodbc
+Summary:	Driver ODBC for unixODBC
+Group:		System/Libraries
+Obsoletes:	%{name}-unixodbc
+Provides:	%{name}-unixodbc
+Requires:	%{libname} = %{version}-%{release}
+
+%description -n	%{libname}-unixodbc
+The freetds-unixodbc package contains ODBC driver build for
+unixODBC.
+
+This package is built with support for TDS version %{TDSVER}.
+
+%package -n	%{libname}-devel
+Summary:	Development libraries and header files for the FreeTDS library
+Group:		Development/C
+Requires:	libtool
+Obsoletes:	%{name}-devel lib%{name}-devel
+Provides:	%{name}-devel = %{version}
+Provides:	lib%{name}-devel = %{version}
+Requires:	%{libname} = %{version}-%{release}
+
+%description -n	%{libname}-devel
+FreeTDS is a free (open source) implementation of Sybase's db-lib,
+ct-lib, and ODBC libraries. Currently, dblib and ctlib are most
+mature. Both of these libraries have several programs know to
+compile and run against them. ODBC is just a roughed in skeleton,
+and not useful for real work.
+
+This package is built with support for TDS version %{TDSVER}.
+
+This package allows you to compile applications with freetds
+libraries.
+
+%package -n	%{libname}-doc
+Summary:	User documentation for FreeTDS
+Group:		Books/Other
+Obsoletes:	%{name}-doc
+Provides:	%{name}-doc
+
+%description -n	%{libname}-doc
+The freetds-doc package contains the useguide and reference of
+FreeTDS and can be installed even if FreeTDS main package is not
+installed
+
+%prep
+
+%setup -q -n %{name}-%{version}
+
+find . -type d -perm 0700 -exec chmod 755 {} \;
+find . -type f -perm 0555 -exec chmod 755 {} \;
+find . -type f -perm 0444 -exec chmod 644 {} \;
+
+for i in `find . -type d -name CVS`  `find . -type d -name .svn` `find . -type f -name .cvs\*` `find . -type f -name .#\*`; do
+    if [ -e "$i" ]; then rm -rf $i; fi >&/dev/null
+done
+
+# lib64 fix
+perl -pi -e "s|/lib\b|/%{_lib}|g" configure.in
+
+# perl path fix
+find -type f | xargs perl -pi -e "s|/usr/local/bin/perl|%{_bindir}/perl|g"
+
+%build
+export WANT_AUTOCONF_2_5=1
+touch include/config.h.in
+libtoolize --copy --force; aclocal-1.7; autoconf; automake-1.7 --add-missing
+
+%configure2_5x \
+    --with-tdsver=%{TDSVER} \
+    --with-unixodbc=%{_prefix}
+
+%make
+
+# (oe) the test suite assumes you have access to a sybase/mssql database 
+# server (tds_connect) and have a correct freedts config...
+#make check
+
+%install
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+
+install -d %{buildroot}/interfaces
+install -d %{buildroot}%{_sysconfdir}/%{name}
+install -d %{buildroot}%{_datadir}/%{name}-%{version}/samples
+
+%makeinstall
+
+chmod +x %{buildroot}%{_libdir}/*.so
+cp -a -f samples/* %{buildroot}%{_datadir}/%{name}-%{version}/samples/
+
+mv %{buildroot}/interfaces %{buildroot}%{_datadir}/%{name}-%{version}/
+
+pushd %{buildroot}%{_sysconfdir}/%{name}
+    ln -sf ../..%{_datadir}/%{name}-%{version}/interfaces/
+popd
+
+#remove unwanted files
+rm -rf %{buildroot}%{_sysconfdir}/locales.conf
+rm -rf %{buildroot}%{_docdir}/%{name}-*
+
+%post -n %{libname} -p /sbin/ldconfig
+
+%postun -n %{libname} -p /sbin/ldconfig
+
+%post -n %{libname}-unixodbc -p /sbin/ldconfig
+
+%postun -n %{libname}-unixodbc -p /sbin/ldconfig
+
+%clean
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+
+%files -n %{libname}
+%defattr(-,root,root)
+%doc AUTHORS BUGS COPYING ChangeLog INSTALL NEWS README PWD
+%config(noreplace) %{_sysconfdir}/freetds.conf
+%config(noreplace) %{_sysconfdir}/pool.conf
+%dir %{_datadir}/%{name}-%{version}
+%{_bindir}/bsqldb
+%{_bindir}/freebcp
+%{_bindir}/tdspool
+%{_bindir}/tsql
+%{_bindir}/defncopy
+%{_bindir}/datacopy
+%{_libdir}/libct.so.*
+%{_libdir}/libsybdb.so.*
+%{_libdir}/libtds.so.*
+%{_libdir}/libtdssrv.so.*
+%{_datadir}/%{name}-%{version}/interfaces
+%dir %{_sysconfdir}/%{name}/interfaces
+%{_mandir}/man1/*
+
+%files  -n %{libname}-unixodbc
+%defattr(-,root,root)
+%{_libdir}/libtdsodbc.so.*
+
+%files  -n %{libname}-devel
+%defattr(-,root,root)
+%doc TODO
+%{_libdir}/*.la
+%{_libdir}/*.a
+%{_libdir}/*.so
+%{_includedir}/*.h
+%{_datadir}/%{name}-%{version}/samples
+
+%files -n %{libname}-doc
+%defattr (-,root,root)
+%doc doc/images doc/doc/freetds-*/userguide doc/doc/freetds-*/reference
+
+
