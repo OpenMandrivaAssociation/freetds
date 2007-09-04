@@ -1,12 +1,13 @@
 %define TDSVER	7.0
 
-%define	major	0
-%define libname	%mklibname %{name} %{major}
+%define	major 0
+%define libname %mklibname %{name} %{major}
+%define develname %mklibname %{name} -d
 
 Summary: 	An OpenSource implementation of the tubular data stream protocol
 Name: 		freetds
 Version: 	0.64
-Release: 	%mkrel 4
+Release: 	%mkrel 5
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
@@ -57,16 +58,17 @@ unixODBC.
 
 This package is built with support for TDS version %{TDSVER}.
 
-%package -n	%{libname}-devel
+%package -n	%{develname}
 Summary:	Development libraries and header files for the FreeTDS library
 Group:		Development/C
 Requires:	libtool
-Obsoletes:	%{name}-devel lib%{name}-devel
-Provides:	%{name}-devel = %{version}
-Provides:	lib%{name}-devel = %{version}
 Requires:	%{libname} = %{version}-%{release}
+Provides:	lib%{name}-devel = %{version}
+Provides:	%{name}-devel = %{version}
+Obsoletes:	%{name}-devel
+Obsoletes:	%{mklibname %{name} 0 -d}
 
-%description -n	%{libname}-devel
+%description -n	%{develname}
 FreeTDS is a free (open source) implementation of Sybase's db-lib,
 ct-lib, and ODBC libraries. Currently, dblib and ctlib are most
 mature. Both of these libraries have several programs know to
@@ -179,7 +181,7 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %defattr(-,root,root)
 %{_libdir}/libtdsodbc.so.*
 
-%files  -n %{libname}-devel
+%files  -n %{develname}
 %defattr(-,root,root)
 %doc TODO
 %{_libdir}/*.la
@@ -191,5 +193,3 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %files -n %{libname}-doc
 %defattr (-,root,root)
 %doc doc/images doc/doc/freetds-*/userguide doc/doc/freetds-*/reference
-
-
