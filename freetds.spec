@@ -11,8 +11,10 @@ Release: 	%mkrel 5
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
-Source: 	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.bz2
+Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.bz2
+Patch0:		freetds-0.64-makefile-doc.patch
 BuildRequires:	doxygen
+BuildRequires:	docbook-style-dsssl
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	unixODBC-devel >= 2.0.0
@@ -94,6 +96,7 @@ installed
 %prep
 
 %setup -q -n %{name}-%{version}
+%patch0 -p1
 
 find . -type d -perm 0700 -exec chmod 755 {} \;
 find . -type f -perm 0555 -exec chmod 755 {} \;
@@ -109,6 +112,17 @@ perl -pi -e "s|/lib\b|/%{_lib}|g" configure.in
 # perl path fix
 find -type f | xargs perl -pi -e "s|/usr/local/bin/perl|%{_bindir}/perl|g"
 
+# cleanup the initial source
+sed -i 's/\r//' doc/tds_ssl.html
+sed -i '1 s,#!.*/perl,#!%{__perl},' samples/*.pl doc/api_status.txt
+
+find doc/ samples/ COPYING* -type f -print0 | xargs -0 chmod -x
+find . -name "*.[ch]" -print0 | xargs -0 chmod -x
+
+# cause to rebuild docs
+rm doc/doc/freetds-%{version}/reference/index.html
+rm doc/doc/freetds-%{version}/userguide/index.htm
+
 %build
 export WANT_AUTOCONF_2_5=1
 touch include/config.h.in
@@ -118,7 +132,7 @@ libtoolize --copy --force; aclocal-1.7; autoconf; automake-1.7 --add-missing
     --with-tdsver=%{TDSVER} \
     --with-unixodbc=%{_prefix}
 
-%make
+%make DOCBOOK_DSL="`rpm -ql docbook-style-dsssl | grep html/docbook.dsl`"
 
 # (oe) the test suite assumes you have access to a sybase/mssql database 
 # server (tds_connect) and have a correct freedts config...
