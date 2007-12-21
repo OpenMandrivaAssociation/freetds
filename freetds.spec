@@ -21,6 +21,7 @@ BuildRequires:	unixODBC-devel >= 2.0.0
 BuildRequires:	autoconf2.5
 BuildRequires:	automake1.7
 BuildRequires:	libtool
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 FreeTDS is a free (open source) implementation of Sybase's db-lib,
