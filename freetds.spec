@@ -7,7 +7,7 @@
 Summary: 	An OpenSource implementation of the tubular data stream protocol
 Name: 		freetds
 Version: 	0.82
-Release: 	%mkrel 1
+Release: 	%mkrel 2
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
