@@ -6,13 +6,13 @@
 
 Summary: 	An OpenSource implementation of the tubular data stream protocol
 Name: 		freetds
-Version: 	0.64
-Release: 	%mkrel 5
+Version: 	0.82
+Release: 	%mkrel 1
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
-Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.bz2
-Patch0:		freetds-0.64-makefile-doc.patch
+Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.gz
+Patch0:		freetds-do_not_build_the_docs.diff
 BuildRequires:	doxygen
 BuildRequires:	docbook-style-dsssl
 BuildRequires:	ncurses-devel
@@ -21,7 +21,7 @@ BuildRequires:	unixODBC-devel >= 2.0.0
 BuildRequires:	autoconf2.5
 BuildRequires:	automake1.7
 BuildRequires:	libtool
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 FreeTDS is a free (open source) implementation of Sybase's db-lib,
@@ -107,7 +107,7 @@ for i in `find . -type d -name CVS`  `find . -type d -name .svn` `find . -type f
 done
 
 # lib64 fix
-perl -pi -e "s|/lib\b|/%{_lib}|g" configure.in
+perl -pi -e "s|/lib\b|/%{_lib}|g" configure*
 
 # perl path fix
 find -type f | xargs perl -pi -e "s|/usr/local/bin/perl|%{_bindir}/perl|g"
@@ -124,29 +124,35 @@ rm doc/doc/freetds-%{version}/reference/index.html
 rm doc/doc/freetds-%{version}/userguide/index.htm
 
 %build
-export WANT_AUTOCONF_2_5=1
-touch include/config.h.in
-libtoolize --copy --force; aclocal-1.7; autoconf; automake-1.7 --add-missing
+#export WANT_AUTOCONF_2_5=1
+#touch include/config.h.in
+#libtoolize --copy --force; aclocal-1.7 -I m4; autoconf; automake-1.7 --add-missing
 
 %configure2_5x \
     --with-tdsver=%{TDSVER} \
     --with-unixodbc=%{_prefix}
 
-%make DOCBOOK_DSL="`rpm -ql docbook-style-dsssl | grep html/docbook.dsl`"
+%make
+# DOCBOOK_DSL="`rpm -ql docbook-style-dsssl | grep html/docbook.dsl`"
 
 # (oe) the test suite assumes you have access to a sybase/mssql database 
 # server (tds_connect) and have a correct freedts config...
 #make check
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -d %{buildroot}/interfaces
 install -d %{buildroot}%{_sysconfdir}/%{name}
 install -d %{buildroot}%{_datadir}/%{name}-%{version}/samples
+install -d %{buildroot}%{_mandir}/man1
+install -d %{buildroot}%{_mandir}/man5
 
 %makeinstall
 
+install -m0644 doc/*.1 %{buildroot}%{_mandir}/man1/
+install -m0644 doc/*.5 %{buildroot}%{_mandir}/man5/
+ 
 chmod +x %{buildroot}%{_libdir}/*.so
 cp -a -f samples/* %{buildroot}%{_datadir}/%{name}-%{version}/samples/
 
@@ -169,7 +175,7 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %postun -n %{libname}-unixodbc -p /sbin/ldconfig
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
@@ -178,18 +184,20 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %config(noreplace) %{_sysconfdir}/pool.conf
 %dir %{_datadir}/%{name}-%{version}
 %{_bindir}/bsqldb
+%{_bindir}/bsqlodbc
+%{_bindir}/datacopy
+%{_bindir}/defncopy
+%{_bindir}/fisql
 %{_bindir}/freebcp
+%{_bindir}/osql
 %{_bindir}/tdspool
 %{_bindir}/tsql
-%{_bindir}/defncopy
-%{_bindir}/datacopy
 %{_libdir}/libct.so.*
 %{_libdir}/libsybdb.so.*
-%{_libdir}/libtds.so.*
-%{_libdir}/libtdssrv.so.*
 %{_datadir}/%{name}-%{version}/interfaces
 %dir %{_sysconfdir}/%{name}/interfaces
 %{_mandir}/man1/*
+%{_mandir}/man5/*
 
 %files  -n %{libname}-unixodbc
 %defattr(-,root,root)
@@ -198,10 +206,10 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %files  -n %{develname}
 %defattr(-,root,root)
 %doc TODO
+%{_includedir}/*.h
 %{_libdir}/*.la
 %{_libdir}/*.a
 %{_libdir}/*.so
-%{_includedir}/*.h
 %{_datadir}/%{name}-%{version}/samples
 
 %files -n %{libname}-doc
