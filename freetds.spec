@@ -150,9 +150,9 @@ install -d %{buildroot}%{_mandir}/man5
 
 %makeinstall
 
-install -m0644 include/tdsconvert.h %{buildroot}%{_includedir}/%{name}/
-install -m0644 include/tds.h %{buildroot}%{_includedir}/%{name}/
-install -m0644 include/tdsver.h %{buildroot}%{_includedir}/%{name}/
+install -m0644 include/tdsconvert.h %{buildroot}%{_includedir}/
+install -m0644 include/tds.h %{buildroot}%{_includedir}/
+install -m0644 include/tdsver.h %{buildroot}%{_includedir}/
 
 install -m0644 doc/*.1 %{buildroot}%{_mandir}/man1/
 install -m0644 doc/*.5 %{buildroot}%{_mandir}/man5/
