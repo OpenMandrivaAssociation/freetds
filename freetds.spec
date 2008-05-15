@@ -7,7 +7,7 @@
 Summary: 	An OpenSource implementation of the tubular data stream protocol
 Name: 		freetds
 Version: 	0.82
-Release: 	%mkrel 2
+Release: 	%mkrel 3
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
@@ -149,6 +149,10 @@ install -d %{buildroot}%{_mandir}/man1
 install -d %{buildroot}%{_mandir}/man5
 
 %makeinstall
+
+install -m0644 include/tdsconvert.h %{buildroot}%{_includedir}/%{name}/
+install -m0644 include/tds.h %{buildroot}%{_includedir}/%{name}/
+install -m0644 include/tdsver.h %{buildroot}%{_includedir}/%{name}/
 
 install -m0644 doc/*.1 %{buildroot}%{_mandir}/man1/
 install -m0644 doc/*.5 %{buildroot}%{_mandir}/man5/
