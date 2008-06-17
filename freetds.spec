@@ -7,7 +7,7 @@
 Summary: 	An OpenSource implementation of the tubular data stream protocol
 Name: 		freetds
 Version: 	0.82
-Release: 	%mkrel 3
+Release: 	%mkrel 4
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
@@ -37,6 +37,8 @@ Summary:	An Open Source implementation of the tubular data stream protocol
 Group:          System/Libraries
 Obsoletes:	%{name}
 Provides:	%{name}
+# library package contained binaries as well, so obsoleting:
+Obsoletes:	%{_lib}freetds_mssql0
 
 %description -n	%{libname}
 FreeTDS is a free (open source) implementation of Sybase's db-lib,
@@ -53,6 +55,7 @@ Group:		System/Libraries
 Obsoletes:	%{name}-unixodbc
 Provides:	%{name}-unixodbc
 Requires:	%{libname} = %{version}-%{release}
+Obsoletes:	%{_lib}freetds_mssql0-unixodbc
 
 %description -n	%{libname}-unixodbc
 The freetds-unixodbc package contains ODBC driver build for
@@ -67,8 +70,10 @@ Requires:	libtool
 Requires:	%{libname} = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}
 Provides:	%{name}-devel = %{version}
+Provides:	freetds_mssql-devel = %{version}-%{release}
 Obsoletes:	%{name}-devel
 Obsoletes:	%{mklibname %{name} 0 -d}
+Obsoletes:	%{_lib}freetds_mssql-devel
 
 %description -n	%{develname}
 FreeTDS is a free (open source) implementation of Sybase's db-lib,
@@ -87,6 +92,7 @@ Summary:	User documentation for FreeTDS
 Group:		Books/Other
 Obsoletes:	%{name}-doc
 Provides:	%{name}-doc
+Obsoletes:	%{_lib}freetds_mssql0-doc
 
 %description -n	%{libname}-doc
 The freetds-doc package contains the useguide and reference of
