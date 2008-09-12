@@ -4,10 +4,10 @@
 %define libname %mklibname %{name} %{major}
 %define develname %mklibname %{name} -d
 
-Summary: 	An OpenSource implementation of the tubular data stream protocol
+Summary: 	An OpenSource implementation of the tabular data stream protocol
 Name: 		freetds
 Version: 	0.82
-Release: 	%mkrel 4
+Release: 	%mkrel 5
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
@@ -24,16 +24,15 @@ BuildRequires:	libtool
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
-FreeTDS is a free (open source) implementation of Sybase's db-lib,
-ct-lib, and ODBC libraries. Currently, dblib and ctlib are most
-mature. Both of these libraries have several programs know to
-compile and run against them. ODBC is just a roughed in skeleton,
-and not useful for real work.
+FreeTDS is a free (open source) implementation of Sybase's db-lib, ct-lib, and
+ODBC libraries. Currently, dblib and ctlib are most mature. Both of these
+libraries have several programs know to compile and run against them. ODBC is
+just a roughed in skeleton, and not useful for real work.
 
 This package is built with support for TDS version %{TDSVER}.
 
 %package -n	%{libname}
-Summary:	An Open Source implementation of the tubular data stream protocol
+Summary:	An Open Source implementation of the tabular data stream protocol
 Group:          System/Libraries
 Obsoletes:	%{name}
 Provides:	%{name}
@@ -41,11 +40,10 @@ Provides:	%{name}
 Obsoletes:	%{_lib}freetds_mssql0
 
 %description -n	%{libname}
-FreeTDS is a free (open source) implementation of Sybase's db-lib,
-ct-lib, and ODBC libraries. Currently, dblib and ctlib are most
-mature. Both of these libraries have several programs know to
-compile and run against them. ODBC is just a roughed in skeleton,
-and not useful for real work.
+FreeTDS is a free (open source) implementation of Sybase's db-lib, ct-lib, and
+ODBC libraries. Currently, dblib and ctlib are most mature. Both of these
+libraries have several programs know to compile and run against them. ODBC is
+just a roughed in skeleton, and not useful for real work.
 
 This package is built with support for TDS version %{TDSVER}.
 
@@ -58,8 +56,7 @@ Requires:	%{libname} = %{version}-%{release}
 Obsoletes:	%{_lib}freetds_mssql0-unixodbc
 
 %description -n	%{libname}-unixodbc
-The freetds-unixodbc package contains ODBC driver build for
-unixODBC.
+The freetds-unixodbc package contains ODBC driver build for unixODBC.
 
 This package is built with support for TDS version %{TDSVER}.
 
@@ -76,16 +73,14 @@ Obsoletes:	%{mklibname %{name} 0 -d}
 Obsoletes:	%{_lib}freetds_mssql-devel
 
 %description -n	%{develname}
-FreeTDS is a free (open source) implementation of Sybase's db-lib,
-ct-lib, and ODBC libraries. Currently, dblib and ctlib are most
-mature. Both of these libraries have several programs know to
-compile and run against them. ODBC is just a roughed in skeleton,
-and not useful for real work.
+FreeTDS is a free (open source) implementation of Sybase's db-lib, ct-lib, and
+ODBC libraries. Currently, dblib and ctlib are most mature. Both of these
+libraries have several programs know to compile and run against them. ODBC is
+just a roughed in skeleton, and not useful for real work.
 
 This package is built with support for TDS version %{TDSVER}.
 
-This package allows you to compile applications with freetds
-libraries.
+This package allows you to compile applications with freetds libraries.
 
 %package -n	%{libname}-doc
 Summary:	User documentation for FreeTDS
@@ -95,9 +90,8 @@ Provides:	%{name}-doc
 Obsoletes:	%{_lib}freetds_mssql0-doc
 
 %description -n	%{libname}-doc
-The freetds-doc package contains the useguide and reference of
-FreeTDS and can be installed even if FreeTDS main package is not
-installed
+The freetds-doc package contains the useguide and reference of FreeTDS and can
+be installed even if FreeTDS main package is not installed
 
 %prep
 
