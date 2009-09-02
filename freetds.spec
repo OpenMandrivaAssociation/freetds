@@ -127,6 +127,7 @@ rm doc/doc/freetds-%{version}/userguide/index.htm
 #export WANT_AUTOCONF_2_5=1
 #touch include/config.h.in
 #libtoolize --copy --force; aclocal-1.7 -I m4; autoconf; automake-1.7 --add-missing
+autoreconf -fis
 
 %configure2_5x \
     --with-tdsver=%{TDSVER} \
