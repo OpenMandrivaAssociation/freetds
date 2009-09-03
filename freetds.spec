@@ -13,6 +13,7 @@ Group: 		System/Libraries
 URL: 		http://www.freetds.org/
 Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.gz
 Patch0:		freetds-do_not_build_the_docs.diff
+Patch1:		freetds-0.82-libtool.patch
 BuildRequires:	doxygen
 BuildRequires:	docbook-style-dsssl
 BuildRequires:	ncurses-devel
@@ -97,6 +98,7 @@ be installed even if FreeTDS main package is not installed
 
 %setup -q -n %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 find . -type d -perm 0700 -exec chmod 755 {} \;
 find . -type f -perm 0555 -exec chmod 755 {} \;
@@ -124,9 +126,6 @@ rm doc/doc/freetds-%{version}/reference/index.html
 rm doc/doc/freetds-%{version}/userguide/index.htm
 
 %build
-#export WANT_AUTOCONF_2_5=1
-#touch include/config.h.in
-#libtoolize --copy --force; aclocal-1.7 -I m4; autoconf; automake-1.7 --add-missing
 autoreconf -fis
 
 %configure2_5x \
