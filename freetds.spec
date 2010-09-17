@@ -7,7 +7,7 @@
 Summary: 	An OpenSource implementation of the tabular data stream protocol
 Name: 		freetds
 Version: 	0.82
-Release: 	%mkrel 9
+Release: 	%mkrel 10
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
@@ -66,6 +66,7 @@ Summary:	Development libraries and header files for the FreeTDS library
 Group:		Development/C
 Requires:	libtool
 Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname}-unixodbc = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}
 Provides:	%{name}-devel = %{version}
 Provides:	freetds_mssql-devel = %{version}-%{release}
