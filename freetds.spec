@@ -7,7 +7,7 @@
 Summary: 	An OpenSource implementation of the tabular data stream protocol
 Name: 		freetds
 Version: 	0.82
-Release: 	%mkrel 10
+Release: 	%mkrel 11
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
@@ -20,7 +20,7 @@ BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	unixODBC-devel >= 2.0.0
 BuildRequires:	autoconf2.5
-BuildRequires:	automake1.7
+BuildRequires:	automake
 BuildRequires:	libtool
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
