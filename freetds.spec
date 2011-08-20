@@ -6,22 +6,25 @@
 
 Summary: 	An OpenSource implementation of the tabular data stream protocol
 Name: 		freetds
-Version: 	0.82
-Release: 	%mkrel 12
+Version: 	0.91
+Release: 	%mkrel 1
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
 Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.gz
 Patch0:		freetds-do_not_build_the_docs.diff
 Patch1:		freetds-0.82-libtool.patch
-BuildRequires:	doxygen
+Patch2:		freetds-0.91-fmtstr.diff
+BuildRequires:	autoconf2.5
+BuildRequires:	automake
 BuildRequires:	docbook-style-dsssl
+BuildRequires:	doxygen
+#BuildRequires:	gnutls-devel
+#BuildRequires:	krb5-devel
+BuildRequires:	libtool
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	unixODBC-devel >= 2.0.0
-BuildRequires:	autoconf2.5
-BuildRequires:	automake
-BuildRequires:	libtool
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -100,6 +103,7 @@ be installed even if FreeTDS main package is not installed
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p0
 
 find . -type d -perm 0700 -exec chmod 755 {} \;
 find . -type f -perm 0555 -exec chmod 755 {} \;
@@ -131,7 +135,10 @@ autoreconf -fis
 
 %configure2_5x \
     --with-tdsver=%{TDSVER} \
-    --with-unixodbc=%{_prefix}
+    --with-unixodbc=%{_prefix} \
+
+#    --enable-krb5=%{_prefix} \
+#    --with-gnutls
 
 %make
 # DOCBOOK_DSL="`rpm -ql docbook-style-dsssl | grep html/docbook.dsl`"
