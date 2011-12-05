@@ -7,7 +7,7 @@
 Summary: 	An OpenSource implementation of the tabular data stream protocol
 Name: 		freetds
 Version: 	0.91
-Release: 	%mkrel 1
+Release: 	2
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
@@ -15,17 +15,14 @@ Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.ta
 Patch0:		freetds-do_not_build_the_docs.diff
 Patch1:		freetds-0.82-libtool.patch
 Patch2:		freetds-0.91-fmtstr.diff
-BuildRequires:	autoconf2.5
-BuildRequires:	automake
+BuildRequires:	autoconf automake libtool
 BuildRequires:	docbook-style-dsssl
 BuildRequires:	doxygen
 #BuildRequires:	gnutls-devel
 #BuildRequires:	krb5-devel
-BuildRequires:	libtool
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	unixODBC-devel >= 2.0.0
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 FreeTDS is a free (open source) implementation of Sybase's db-lib, ct-lib, and
@@ -56,7 +53,7 @@ Summary:	Driver ODBC for unixODBC
 Group:		System/Libraries
 Obsoletes:	%{name}-unixodbc
 Provides:	%{name}-unixodbc
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} >= %{version}-%{release}
 Obsoletes:	%{_lib}freetds_mssql0-unixodbc
 
 %description -n	%{libname}-unixodbc
@@ -68,7 +65,7 @@ This package is built with support for TDS version %{TDSVER}.
 Summary:	Development libraries and header files for the FreeTDS library
 Group:		Development/C
 Requires:	libtool
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} >= %{version}-%{release}
 Requires:	%{libname}-unixodbc = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}
 Provides:	%{name}-devel = %{version}
@@ -178,27 +175,10 @@ popd
 rm -rf %{buildroot}%{_sysconfdir}/locales.conf
 rm -rf %{buildroot}%{_docdir}/%{name}-*
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%post -n %{libname}-unixodbc -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname}-unixodbc -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
+# cleanup
+rm -f %{buildroot}%{_libdir}/*.*a
 
 %files -n %{libname}
-%defattr(-,root,root)
 %doc AUTHORS BUGS COPYING ChangeLog INSTALL NEWS README PWD
 %config(noreplace) %{_sysconfdir}/freetds.conf
 %config(noreplace) %{_sysconfdir}/pool.conf
@@ -220,18 +200,13 @@ rm -rf %{buildroot}
 %{_mandir}/man5/*
 
 %files  -n %{libname}-unixodbc
-%defattr(-,root,root)
 %{_libdir}/libtdsodbc.so.*
 
 %files  -n %{develname}
-%defattr(-,root,root)
 %doc TODO
 %{_includedir}/*.h
-%{_libdir}/*.la
-%{_libdir}/*.a
 %{_libdir}/*.so
 %{_datadir}/%{name}-%{version}/samples
 
 %files -n %{libname}-doc
-%defattr (-,root,root)
 %doc doc/images doc/doc/freetds-*/userguide doc/doc/freetds-*/reference
