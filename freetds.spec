@@ -7,7 +7,7 @@
 Summary: 	An OpenSource implementation of the tabular data stream protocol
 Name: 		freetds
 Version: 	0.91
-Release: 	3
+Release: 	4
 License: 	LGPL
 Group: 		System/Libraries
 URL: 		http://www.freetds.org/
