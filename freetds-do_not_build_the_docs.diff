@@ -1,0 +1,24 @@
+diff -Naur freetds-0.91/Makefile.am freetds-0.91.oden/Makefile.am
+--- freetds-0.91/Makefile.am	2010-06-27 07:58:09.000000000 +0200
++++ freetds-0.91.oden/Makefile.am	2011-08-20 16:08:03.060019602 +0200
+@@ -3,7 +3,7 @@
+ ## SUBDIRS determines in which directories automake will generate a Makefile
+ ## See also AC_OUTPUT in configure.ac
+ 
+-SUBDIRS	=	include src doc samples win32 vms
++SUBDIRS	=	include src samples win32 vms
+ 
+ ACLOCAL_AMFLAGS = -I m4
+ 
+diff -Naur freetds-0.91/Makefile.in freetds-0.91.oden/Makefile.in
+--- freetds-0.91/Makefile.in	2011-08-18 03:57:36.000000000 +0200
++++ freetds-0.91.oden/Makefile.in	2011-08-20 16:08:34.116019596 +0200
+@@ -276,7 +276,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = include src doc samples win32 vms
++SUBDIRS = include src samples win32 vms
+ ACLOCAL_AMFLAGS = -I m4
+ EXTRA_DIST = interfaces PWD.in BUGS \
+ 		freetds.conf locales.conf \
