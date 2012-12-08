@@ -4,13 +4,13 @@
 %define libname %mklibname %{name} %{major}
 %define develname %mklibname %{name} -d
 
-Summary: 	An OpenSource implementation of the tabular data stream protocol
-Name: 		freetds
-Version: 	0.91
-Release: 	4
-License: 	LGPL
-Group: 		System/Libraries
-URL: 		http://www.freetds.org/
+Summary:	An OpenSource implementation of the tabular data stream protocol
+Name:		freetds
+Version:	0.91
+Release:	5
+License:	LGPL
+Group:		System/Libraries
+URL:		http://www.freetds.org/
 Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/%{name}-%{version}.tar.gz
 Patch0:		freetds-do_not_build_the_docs.diff
 Patch1:		freetds-0.82-libtool.patch
@@ -34,11 +34,11 @@ This package is built with support for TDS version %{TDSVER}.
 
 %package -n	%{libname}
 Summary:	An Open Source implementation of the tabular data stream protocol
-Group:          System/Libraries
-Obsoletes:	%{name}
+Group:		System/Libraries
+Obsoletes:	%{name} < 0.91
 Provides:	%{name}
 # library package contained binaries as well, so obsoleting:
-Obsoletes:	%{_lib}freetds_mssql0
+Obsoletes:	%{_lib}freetds_mssql0 < 0.91
 
 %description -n	%{libname}
 FreeTDS is a free (open source) implementation of Sybase's db-lib, ct-lib, and
@@ -51,10 +51,10 @@ This package is built with support for TDS version %{TDSVER}.
 %package -n	%{libname}-unixodbc
 Summary:	Driver ODBC for unixODBC
 Group:		System/Libraries
-Obsoletes:	%{name}-unixodbc
+Obsoletes:	%{name}-unixodbc < 0.91
 Provides:	%{name}-unixodbc
 Requires:	%{libname} >= %{version}-%{release}
-Obsoletes:	%{_lib}freetds_mssql0-unixodbc
+Obsoletes:	%{_lib}freetds_mssql0-unixodbc < 0.91
 
 %description -n	%{libname}-unixodbc
 The freetds-unixodbc package contains ODBC driver build for unixODBC.
@@ -70,9 +70,9 @@ Requires:	%{libname}-unixodbc = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}
 Provides:	%{name}-devel = %{version}
 Provides:	freetds_mssql-devel = %{version}-%{release}
-Obsoletes:	%{name}-devel
-Obsoletes:	%{mklibname %{name} 0 -d}
-Obsoletes:	%{_lib}freetds_mssql-devel
+Obsoletes:	%{name}-devel < 0.91
+Obsoletes:	%{mklibname %{name} 0 -d} < 0.91
+Obsoletes:	%{_lib}freetds_mssql-devel < 0.91
 
 %description -n	%{develname}
 FreeTDS is a free (open source) implementation of Sybase's db-lib, ct-lib, and
@@ -87,9 +87,9 @@ This package allows you to compile applications with freetds libraries.
 %package -n	%{libname}-doc
 Summary:	User documentation for FreeTDS
 Group:		Books/Other
-Obsoletes:	%{name}-doc
+Obsoletes:	%{name}-doc < 0.91
 Provides:	%{name}-doc
-Obsoletes:	%{_lib}freetds_mssql0-doc
+Obsoletes:	%{_lib}freetds_mssql0-doc < 0.91
 
 %description -n	%{libname}-doc
 The freetds-doc package contains the useguide and reference of FreeTDS and can
@@ -133,7 +133,7 @@ autoreconf -fis
 %configure2_5x \
     --with-tdsver=%{TDSVER} \
     --with-unixodbc=%{_prefix} \
-
+    --disable-static
 #    --enable-krb5=%{_prefix} \
 #    --with-gnutls
 
@@ -175,9 +175,6 @@ popd
 rm -rf %{buildroot}%{_sysconfdir}/locales.conf
 rm -rf %{buildroot}%{_docdir}/%{name}-*
 
-# cleanup
-rm -f %{buildroot}%{_libdir}/*.*a
-
 %files -n %{libname}
 %doc AUTHORS BUGS COPYING ChangeLog INSTALL NEWS README PWD
 %config(noreplace) %{_sysconfdir}/freetds.conf
@@ -210,3 +207,146 @@ rm -f %{buildroot}%{_libdir}/*.*a
 
 %files -n %{libname}-doc
 %doc doc/images doc/doc/freetds-*/userguide doc/doc/freetds-*/reference
+
+
+%changelog
+* Thu Dec 08 2011 Oden Eriksson <oeriksson@mandriva.com> 0.91-4
++ Revision: 739191
+- rebuilt for new unixODBC (second try)
+
+* Thu Dec 08 2011 Oden Eriksson <oeriksson@mandriva.com> 0.91-3
++ Revision: 739126
+- rebuilt for new unixODBC
+
+* Mon Dec 05 2011 Oden Eriksson <oeriksson@mandriva.com> 0.91-2
++ Revision: 737853
+- drop the static lib and the libtool *.la file
+- various fixes
+
+* Sat Aug 20 2011 Oden Eriksson <oeriksson@mandriva.com> 0.91-1
++ Revision: 695909
+- 0.91
+
+* Tue May 03 2011 Oden Eriksson <oeriksson@mandriva.com> 0.82-12
++ Revision: 664354
+- mass rebuild
+
+* Sun Jan 02 2011 Oden Eriksson <oeriksson@mandriva.com> 0.82-11mdv2011.0
++ Revision: 627571
+- don't force the usage of automake1.7
+
+* Sat Sep 18 2010 Funda Wang <fwang@mandriva.org> 0.82-10mdv2011.0
++ Revision: 579335
+- add missing requires
+
+* Sun Mar 14 2010 Oden Eriksson <oeriksson@mandriva.com> 0.82-9mdv2010.1
++ Revision: 519002
+- rebuild
+
+* Thu Sep 03 2009 Oden Eriksson <oeriksson@mandriva.com> 0.82-8mdv2010.0
++ Revision: 427840
+- added P1 from fedora to fix build (libtool)
+- fix build
+
+  + Christophe Fergeau <cfergeau@mandriva.com>
+    - rebuild
+
+* Wed Feb 25 2009 Thierry Vignaud <tv@mandriva.org> 0.82-7mdv2009.1
++ Revision: 344804
+- rebuild for new libreadline
+
+* Sat Dec 20 2008 Oden Eriksson <oeriksson@mandriva.com> 0.82-6mdv2009.1
++ Revision: 316559
+- rebuild
+
+* Fri Sep 12 2008 Oden Eriksson <oeriksson@mandriva.com> 0.82-5mdv2009.0
++ Revision: 284184
+- fix #31665 (Typo in summary and bad source url)
+
+* Tue Jun 17 2008 Anssi Hannula <anssi@mandriva.org> 0.82-4mdv2009.0
++ Revision: 222182
+- replace freetds_mssql subpackages
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+* Thu May 15 2008 Oden Eriksson <oeriksson@mandriva.com> 0.82-3mdv2009.0
++ Revision: 207642
+- whoops!
+- add compat headers
+
+* Thu May 08 2008 Oden Eriksson <oeriksson@mandriva.com> 0.82-2mdv2009.0
++ Revision: 204503
+- rebuild
+- 0.82
+- added P0 to disable building the allready built docs
+
+  + Olivier Blin <blino@mandriva.org>
+    - restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Tue Sep 04 2007 Oden Eriksson <oeriksson@mandriva.com> 0.64-5mdv2008.0
++ Revision: 79215
+- sync with freetds-0.64-7.fc8.src.rpm to make it build the docs
+- new devel naming
+
+
+* Wed Oct 11 2006 Oden Eriksson <oeriksson@mandriva.com>
++ 2006-10-10 10:38:53 (63317)
+- rebuild
+
+* Wed Oct 11 2006 Oden Eriksson <oeriksson@mandriva.com>
++ 2006-10-10 10:37:57 (63316)
+- Import freetds
+
+* Tue Jul 18 2006 Oden Eriksson <oeriksson@mandriva.com> 0.64-2mdv2007.1
+- rebuild
+
+* Mon Jul 03 2006 Oden Eriksson <oeriksson@mandriva.com> 0.64-2mdv2007.0
+- 0.64 (Major feature enhancements)
+
+* Tue May 16 2006 Oden Eriksson <oeriksson@mandriva.com> 0.64-1.RC2.1mdk
+- 0.64RC2
+
+* Fri Oct 21 2005 Oden Eriksson <oeriksson@mandriva.com> 0.64-0.20051020.1mdk
+- new snap (20051020)
+
+* Fri Sep 02 2005 Oden Eriksson <oeriksson@mandriva.com> 0.64-0.20050831.1mdk
+- used a snap in an attempt to close #17272
+
+* Fri May 06 2005 Oden Eriksson <oeriksson@mandriva.com> 0.63-3mdk
+- rebuilt with gcc4
+
+* Sun Apr 10 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 0.63-2mdk
+- added one lib64 fix
+
+* Thu Mar 31 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 0.63-1mdk
+- 0.63
+- use the %%mkrel macro
+
+* Fri Feb 04 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 0.62.4-5mdk
+- rebuilt against new readline
+
+* Mon Jan 03 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 0.62.4-4mdk
+- fix deps
+
+* Mon Jan 03 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 0.62.4-3mdk
+- libifiction (why hasn't this been done before?)
+
+* Wed Jul 14 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 0.62.4-2mdk
+- make it compile on 10.0 too
+
+* Sat Jul 03 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 0.62.4-1mdk
+- 0.62.4
+
+* Tue Jun 15 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 0.62.3-2mdk
+- rebuild
+
+* Thu May 06 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 0.62.3-1mdk
+- 0.62.3
+- merge spec file stuff from the provided spec file
+- fix deps
+- misc spec file fixes
+
