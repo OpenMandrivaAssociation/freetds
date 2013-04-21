@@ -1,5 +1,5 @@
---- src/apps/bsqldb.c	2011-03-13 22:32:46.000000000 +0100
-+++ src/apps/bsqldb.c.oden	2011-08-20 16:12:22.021019615 +0200
+--- ./src/apps/bsqldb.c	2011-03-13 22:32:46.000000000 +0100
++++ ./src/apps/bsqldb.c.oden	2011-08-20 16:12:22.021019615 +0200
 @@ -545,7 +545,7 @@ print_results(DBPROCESS *dbproc)
  							perror("could not write to output file");
  							exit(EXIT_FAILURE);
