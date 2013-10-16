@@ -1,2 +1,4 @@
+removed_sources:
+  freetds-0.91.tar.gz: 3ab06c8e208e82197dc25d09ae353d9f3be7db52
 sources:
-  "freetds-0.91.tar.gz": 3ab06c8e208e82197dc25d09ae353d9f3be7db52
+  freetds-0.92.63.tar.bz2: 4374f2857cb070f02f7450f62f5d5ecb43cd5eaf

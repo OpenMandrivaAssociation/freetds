@@ -9,12 +9,12 @@
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	0.91
-Release:	6
+Version:	0.92.63
+Release:	1
 License:	LGPLv2
 Group:		System/Libraries
 Url:		http://www.freetds.org/
-Source0:	http://mirrors.ibiblio.org/freetds/stable/%{name}-%{version}.tar.gz
+Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/git/%{name}-%{version}.tar.bz2
 Patch0:		freetds-do_not_build_the_docs.diff
 Patch1:		freetds-0.82-libtool.patch
 Patch2:		freetds-0.91-fmtstr.diff
@@ -197,4 +197,5 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 
 %files -n %{name}-doc
 %doc doc/images doc/doc/freetds-*/userguide doc/doc/freetds-*/reference
+
 
