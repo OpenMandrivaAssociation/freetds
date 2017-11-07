@@ -9,15 +9,12 @@
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	0.92.63
-Release:	10
+Version:	1.00.70
+Release:	1
 License:	LGPLv2
 Group:		System/Libraries
 Url:		http://www.freetds.org/
-Source0:	http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/git/%{name}-%{version}.tar.bz2
-Patch0:		freetds-do_not_build_the_docs.diff
-Patch1:		freetds-0.82-libtool.patch
-Patch2:		freetds-0.91-fmtstr.diff
+Source0:	ftp://ftp.freetds.org/pub/freetds/stable/%{name}-%{version}.tar.bz2
 
 BuildRequires:	libtool
 BuildRequires:	docbook-style-dsssl
@@ -111,14 +108,10 @@ sed -i '1 s,#!.*/perl,#!%{__perl},' samples/*.pl doc/api_status.txt
 find doc/ samples/ COPYING* -type f -print0 | xargs -0 chmod -x
 find . -name "*.[ch]" -print0 | xargs -0 chmod -x
 
-# cause to rebuild docs
-rm doc/doc/freetds-%{version}/reference/index.html
-rm doc/doc/freetds-%{version}/userguide/index.htm
-
 autoreconf -fis
 
 %build
-%configure2_5x \
+%configure \
 	--with-tdsver=%{TDSVER} \
 	--with-unixodbc=%{_prefix} \
 	--disable-static
@@ -141,9 +134,7 @@ install -d %{buildroot}%{_mandir}/man5
 
 %makeinstall
 
-install -m0644 include/tdsconvert.h %{buildroot}%{_includedir}/
-install -m0644 include/tds.h %{buildroot}%{_includedir}/
-install -m0644 include/tdsver.h %{buildroot}%{_includedir}/
+install -m0644 include/freetds/tds.h %{buildroot}%{_includedir}/
 
 install -m0644 doc/*.1 %{buildroot}%{_mandir}/man1/
 install -m0644 doc/*.5 %{buildroot}%{_mandir}/man5/
@@ -196,6 +187,3 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %{_datadir}/%{name}-%{version}/samples
 
 %files -n %{name}-doc
-%doc doc/images doc/doc/freetds-*/userguide doc/doc/freetds-*/reference
-
-
