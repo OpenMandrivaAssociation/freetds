@@ -9,7 +9,7 @@
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	1.00.82
+Version:	1.00.86
 Release:	1
 License:	LGPLv2
 Group:		System/Libraries
@@ -167,7 +167,7 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %{_bindir}/tdspool
 %{_bindir}/tsql
 %{_datadir}/%{name}-%{version}/interfaces
-%dir %{_sysconfdir}/%{name}/interfaces
+%{_sysconfdir}/%{name}/interfaces
 %{_mandir}/man1/*
 %{_mandir}/man5/*
 
@@ -187,3 +187,4 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %{_datadir}/%{name}-%{version}/samples
 
 %files -n %{name}-doc
+%doc %{_docdir}/%{name}
