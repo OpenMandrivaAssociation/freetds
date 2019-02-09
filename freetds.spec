@@ -19,6 +19,7 @@ Source0:	ftp://ftp.freetds.org/pub/freetds/stable/%{name}-%{version}.tar.bz2
 BuildRequires:	libtool
 BuildRequires:	docbook-style-dsssl
 BuildRequires:	doxygen
+BuildRequires:	gettext-devel
 #BuildRequires:	gnutls-devel
 #BuildRequires:	krb5-devel
 BuildRequires:	readline-devel
