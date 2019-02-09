@@ -23,6 +23,7 @@ BuildRequires:	gettext-devel
 #BuildRequires:	gnutls-devel
 #BuildRequires:	krb5-devel
 BuildRequires:	readline-devel
+BuildRequires:	git
 BuildRequires:	unixODBC-devel >= 2.0.0
 BuildRequires:	pkgconfig(ncurses)
 Conflicts:	%{_lib}freetds0 < 0.91-6
