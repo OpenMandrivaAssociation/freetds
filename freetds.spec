@@ -120,8 +120,6 @@ autoreconf -fis
 #	--enable-krb5=%{_prefix} \
 #	--with-gnutls
 
-%{_bindir}/git init
-
 %make
 # DOCBOOK_DSL="`rpm -ql docbook-style-dsssl | grep html/docbook.dsl`"
 
