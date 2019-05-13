@@ -1,11 +1,11 @@
-%define TDSVER	7.4
-%define	major	0
-%define	ctmaj	4
-%define	symaj	5
-%define	libtdsodbc	%mklibname tdsodbc %{major}
-%define	libct		%mklibname ct %{ctmaj}
-%define	libsybdb	%mklibname sybdb %{symaj}
-%define devname 	%mklibname %{name} -d
+%define TDSVER 7.4
+%define major 0
+%define ctmaj 4
+%define symaj 5
+%define libtdsodbc %mklibname tdsodbc %{major}
+%define libct %mklibname ct %{ctmaj}
+%define libsybdb %mklibname sybdb %{symaj}
+%define devname %mklibname %{name} -d
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
@@ -92,15 +92,11 @@ find . -type d -perm 0700 -exec chmod 755 {} \;
 find . -type f -perm 0555 -exec chmod 755 {} \;
 find . -type f -perm 0444 -exec chmod 644 {} \;
 
-for i in $(find . -type d -name CVS)  $(find . -type d -name .svn) $(find . -type f -name .cvs\*) ; do
-	if [ -e "$i" ]; then rm -rf $i; fi >&/dev/null
-done
-
 # lib64 fix
 sed -i -e "s|/lib\b|/%{_lib}|g" configure*
 
 # perl path fix
-find -type f | xargs perl -pi -e "s|/usr/local/bin/perl|%{_bindir}/perl|g"
+find -type f | xargs sed -i -e "s|/usr/local/bin/perl|%{_bindir}/perl|g"
 
 # cleanup the initial source
 sed -i 's/\r//' doc/tds_ssl.html
@@ -108,6 +104,9 @@ sed -i '1 s,#!.*/perl,#!%{__perl},' samples/*.pl doc/api_status.txt
 
 find doc/ samples/ COPYING* -type f -print0 | xargs -0 chmod -x
 find . -name "*.[ch]" -print0 | xargs -0 chmod -x
+
+# disable docs
+sed -e 's#src doc#src#' Makefile.*
 
 autoreconf -fis
 
@@ -139,15 +138,15 @@ install -m0644 include/freetds/tds.h %{buildroot}%{_includedir}/
 
 install -m0644 doc/*.1 %{buildroot}%{_mandir}/man1/
 install -m0644 doc/*.5 %{buildroot}%{_mandir}/man5/
- 
+
 chmod +x %{buildroot}%{_libdir}/*.so
 cp -a -f samples/* %{buildroot}%{_datadir}/%{name}-%{version}/samples/
 
 mv %{buildroot}/interfaces %{buildroot}%{_datadir}/%{name}-%{version}/
 
-pushd %{buildroot}%{_sysconfdir}/%{name}
-	ln -sf ../..%{_datadir}/%{name}-%{version}/interfaces/
-popd
+cd %{buildroot}%{_sysconfdir}/%{name}
+ln -sf ../..%{_datadir}/%{name}-%{version}/interfaces/
+cd -
 
 #remove unwanted files
 rm -rf %{buildroot}%{_sysconfdir}/locales.conf
