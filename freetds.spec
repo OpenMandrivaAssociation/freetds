@@ -92,7 +92,7 @@ find . -type d -perm 0700 -exec chmod 755 {} \;
 find . -type f -perm 0555 -exec chmod 755 {} \;
 find . -type f -perm 0444 -exec chmod 644 {} \;
 
-for i in `find . -type d -name CVS`  `find . -type d -name .svn` `find . -type f -name .cvs\*` `find . -type f -name .#\*`; do
+for i in $(find . -type d -name CVS)  $(find . -type d -name .svn) $(find . -type f -name .cvs\*) ; do
 	if [ -e "$i" ]; then rm -rf $i; fi >&/dev/null
 done
 
@@ -120,7 +120,7 @@ autoreconf -fis
 #	--with-gnutls
 
 %make_build
-# DOCBOOK_DSL="`rpm -ql docbook-style-dsssl | grep html/docbook.dsl`"
+# DOCBOOK_DSL="$(rpm -ql docbook-style-dsssl | grep html/docbook.dsl)"
 
 # (oe) the test suite assumes you have access to a sybase/mssql database 
 # server (tds_connect) and have a correct freedts config...
