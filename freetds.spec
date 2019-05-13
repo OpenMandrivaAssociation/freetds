@@ -86,8 +86,7 @@ The freetds-doc package contains the useguide and reference of FreeTDS and can
 be installed even if FreeTDS main package is not installed
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 
 find . -type d -perm 0700 -exec chmod 755 {} \;
 find . -type f -perm 0555 -exec chmod 755 {} \;
@@ -120,7 +119,7 @@ autoreconf -fis
 #	--enable-krb5=%{_prefix} \
 #	--with-gnutls
 
-%make
+%make_build
 # DOCBOOK_DSL="`rpm -ql docbook-style-dsssl | grep html/docbook.dsl`"
 
 # (oe) the test suite assumes you have access to a sybase/mssql database 
@@ -134,7 +133,7 @@ install -d %{buildroot}%{_datadir}/%{name}-%{version}/samples
 install -d %{buildroot}%{_mandir}/man1
 install -d %{buildroot}%{_mandir}/man5
 
-%makeinstall
+%make_install
 
 install -m0644 include/freetds/tds.h %{buildroot}%{_includedir}/
 
