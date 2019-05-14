@@ -106,7 +106,7 @@ find doc/ samples/ COPYING* -type f -print0 | xargs -0 chmod -x
 find . -name "*.[ch]" -print0 | xargs -0 chmod -x
 
 # disable docs
-sed -e 's#src doc#src#' Makefile.*
+sed -i -e 's#src doc#src#' Makefile.*
 
 autoreconf -fis
 
