@@ -9,7 +9,7 @@
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	1.3.20
+Version:	1.4
 Release:	1
 License:	LGPLv2
 Group:		System/Libraries
@@ -153,7 +153,7 @@ rm -rf %{buildroot}%{_sysconfdir}/locales.conf
 rm -rf %{buildroot}%{_docdir}/%{name}-*
 
 %files
-%doc AUTHORS.md BUGS.md COPYING.txt ChangeLog INSTALL.md NEWS.md README.md PWD
+%doc AUTHORS.md COPYING.txt ChangeLog INSTALL.md NEWS.md README.md PWD
 %config(noreplace) %{_sysconfdir}/freetds.conf
 %config(noreplace) %{_sysconfdir}/pool.conf
 %dir %{_datadir}/%{name}-%{version}
