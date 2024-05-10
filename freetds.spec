@@ -9,14 +9,13 @@
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	1.4.12
+Version:	1.4.13
 Release:	1
 License:	LGPLv2
 Group:		System/Libraries
 Url:		http://www.freetds.org/
 Source0:	ftp://ftp.freetds.org/pub/freetds/stable/%{name}-%{version}.tar.gz
 
-BuildRequires:	libtool
 BuildRequires:	docbook-style-dsssl
 BuildRequires:	doxygen
 BuildRequires:	gettext-devel
@@ -27,6 +26,9 @@ BuildRequires:	git
 BuildRequires:	unixODBC-devel >= 2.0.0
 BuildRequires:	pkgconfig(ncurses)
 Conflicts:	%{_lib}freetds0 < 0.91-6
+BuildSystem:	autotools
+BuildOption:	--with-tdsver=%{TDSVER}
+BuildOption:	--with-unixodbc=%{_prefix}
 
 %description
 FreeTDS is a free (open source) implementation of Sybase's db-lib, ct-lib, and
@@ -85,9 +87,7 @@ Obsoletes:	%{_lib}freetds0-doc < 0.91-6
 The freetds-doc package contains the useguide and reference of FreeTDS and can
 be installed even if FreeTDS main package is not installed
 
-%prep
-%autosetup -p1
-
+%prep -a
 find . -type d -perm 0700 -exec chmod 755 {} \;
 find . -type f -perm 0555 -exec chmod 755 {} \;
 find . -type f -perm 0444 -exec chmod 644 {} \;
@@ -108,32 +108,14 @@ find . -name "*.[ch]" -print0 | xargs -0 chmod -x
 # disable docs
 sed -i -e 's#src doc#src#' Makefile.*
 
-autoreconf -fis
-
-%build
-%configure \
-	--with-tdsver=%{TDSVER} \
-	--with-unixodbc=%{_prefix} \
-	--disable-static
-#	--enable-krb5=%{_prefix} \
-#	--with-gnutls
-
-%make_build
-# DOCBOOK_DSL="$(rpm -ql docbook-style-dsssl | grep html/docbook.dsl)"
-
-# (oe) the test suite assumes you have access to a sybase/mssql database 
-# server (tds_connect) and have a correct freedts config...
-#make check
-
-%install
+%install -p
 install -d %{buildroot}/interfaces
 install -d %{buildroot}%{_sysconfdir}/%{name}
 install -d %{buildroot}%{_datadir}/%{name}-%{version}/samples
 install -d %{buildroot}%{_mandir}/man1
 install -d %{buildroot}%{_mandir}/man5
 
-%make_install
-
+%install -a
 install -m0644 include/freetds/tds.h %{buildroot}%{_includedir}/
 
 install -m0644 doc/*.1 %{buildroot}%{_mandir}/man1/
@@ -153,7 +135,7 @@ rm -rf %{buildroot}%{_sysconfdir}/locales.conf
 rm -rf %{buildroot}%{_docdir}/%{name}-*
 
 %files
-%doc AUTHORS.md COPYING.txt ChangeLog INSTALL.md NEWS.md README.md PWD
+%doc AUTHORS.md COPYING.txt ChangeLog INSTALL.md NEWS.md README.md
 %config(noreplace) %{_sysconfdir}/freetds.conf
 %config(noreplace) %{_sysconfdir}/pool.conf
 %dir %{_datadir}/%{name}-%{version}
