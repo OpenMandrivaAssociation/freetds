@@ -13,7 +13,7 @@ Version:	1.4.22
 Release:	1
 License:	LGPLv2
 Group:		System/Libraries
-Url:		http://www.freetds.org/
+Url:		https://www.freetds.org/
 Source0:	ftp://ftp.freetds.org/pub/freetds/stable/%{name}-%{version}.tar.gz
 
 BuildRequires:	docbook-style-dsssl
