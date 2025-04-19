@@ -2,14 +2,17 @@
 %define major 0
 %define ctmaj 4
 %define symaj 5
-%define libtdsodbc %mklibname tdsodbc %{major}
-%define libct %mklibname ct %{ctmaj}
-%define libsybdb %mklibname sybdb %{symaj}
+%define libtdsodbc %mklibname tdsodbc
+%define oldlibtdsodbc %mklibname tdsodbc 0
+%define libct %mklibname ct
+%define oldlibct %mklibname ct 4
+%define libsybdb %mklibname sybdb
+%define oldlibsybdb %mklibname sybdb 5
 %define devname %mklibname %{name} -d
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	1.4.27
+Version:	1.5
 Release:	1
 License:	LGPLv2
 Group:		System/Libraries
@@ -42,6 +45,8 @@ This package is built with support for TDS version %{TDSVER}.
 Summary:	An Open Source implementation of the tabular data stream protocol
 Group:		System/Libraries
 Conflicts:	%{_lib}freetds0 < 0.91-6
+# Renamed before OM 6.0 2025-04-19
+%rename %{oldlibct}
 
 %description -n	%{libct}
 This package contains a shared library for %{name} and is built with support 
@@ -51,6 +56,8 @@ for TDS version %{TDSVER}.
 Summary:	An Open Source implementation of the tabular data stream protocol
 Group:		System/Libraries
 Obsoletes:	%{_lib}freetds0 < 0.91-6
+# Renamed before OM 6.0 2025-04-19
+%rename %{oldlibsybdb}
 
 %description -n	%{libsybdb}
 This package contains a shared library for %{name} and is built with support 
@@ -60,6 +67,8 @@ for TDS version %{TDSVER}.
 Summary:	Driver ODBC for unixODBC
 Group:		System/Libraries
 Obsoletes:	%{_lib}freetds0-unixodbc < 0.91-6
+# Renamed before OM 6.0 2025-04-19
+%rename %{oldlibtdsodbc}
 
 %description -n	%{libtdsodbc}
 This package contains the ODBC driver build for unixODBC and is built with 
@@ -154,7 +163,7 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %{_mandir}/man5/*
 
 %files  -n %{libtdsodbc}
-%{_libdir}/libtdsodbc.so.%{major}*
+%{_libdir}/libtdsodbc.so
 
 %files  -n %{libct}
 %{_libdir}/libct.so.%{ctmaj}*
@@ -166,6 +175,7 @@ rm -rf %{buildroot}%{_docdir}/%{name}-*
 %doc TODO.md
 %{_includedir}/*.h
 %{_libdir}/*.so
+%exclude %{_libdir}/libtdsodbc.so
 %{_datadir}/%{name}-%{version}/samples
 
 %files -n %{name}-doc
