@@ -19,6 +19,10 @@ Group:		System/Libraries
 Url:		https://www.freetds.org/
 Source0:	ftp://ftp.freetds.org/pub/freetds/stable/%{name}-%{version}.tar.gz
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	docbook-style-dsssl
 BuildRequires:	doxygen
 BuildRequires:	gettext-devel
