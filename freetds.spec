@@ -12,12 +12,12 @@
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	1.5.18
+Version:	1.5.20
 Release:	1
 License:	LGPLv2
 Group:		System/Libraries
 Url:		https://www.freetds.org/
-Source0:	ftp://ftp.freetds.org/pub/freetds/stable/%{name}-%{version}.tar.gz
+Source0:	https://astron.com/pub/freetds/stable/%{name}-%{version}.tar.gz
 
 BuildRequires:	autoconf
 BuildRequires:	automake
