@@ -12,7 +12,7 @@
 
 Summary:	An OpenSource implementation of the tabular data stream protocol
 Name:		freetds
-Version:	1.5.20
+Version:	1.5.21
 Release:	1
 License:	LGPLv2
 Group:		System/Libraries
@@ -81,9 +81,9 @@ support for TDS version %{TDSVER}.
 %package -n	%{devname}
 Summary:	Development libraries and header files for the FreeTDS library
 Group:		Development/C
-Requires:	%{libtdsodbc} = %{version}-%{release}
-Requires:	%{libct} = %{version}-%{release}
-Requires:	%{libsybdb} = %{version}-%{release}
+Requires:	%{libtdsodbc} = %{EVRD}
+Requires:	%{libct} = %{EVRD}
+Requires:	%{libsybdb} = %{EVRD}
 Provides:	%{name}-devel = %{version}
 Provides:	freetds_mssql-devel = %{version}-%{release}
 
